@@ -1,0 +1,13 @@
+[Unit]
+Description=Kiosk
+After=network-online.target
+
+[Service]
+User=root
+Group=root
+Type=simple
+ExecStart=/usr/bin/startx /usr/local/bin/kiosk_host.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
