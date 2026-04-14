@@ -231,3 +231,4 @@ naughty.notify({ title = "AwesomeWM", text = "Configuration reloaded!", timeout 
 -- Autostart
 awful.spawn.with_shell("xfsettingsd")
 awful.spawn.with_shell("nm-applet")
+awful.spawn.with_shell("picom -b")
