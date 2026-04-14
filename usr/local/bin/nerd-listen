@@ -22,16 +22,14 @@ if ! pgrep -u root pipewire > /dev/null; then
 fi
 
 # 2. Notify start
-notify-send "Nerd Input" "Prepare to speak..." -t 1000 >> "$LOGFILE" 2>&1
-sleep 1
-notify-send "Nerd Input" "Listening..." -i audio-input-microphone >> "$LOGFILE" 2>&1
+notify-send "Nerd Input" "Listening... Speak now." -i audio-input-microphone -t 2000 >> "$LOGFILE" 2>&1
 
 # 3. Transcribe
 VENV_PYTHON="/opt/nerd-input/venv/bin/python3"
 SCRIPT="/opt/nerd-input/whisper_transcribe.py"
 
-echo "Calling whisper script..." >> "$LOGFILE"
-TRANSCRIPTION=$($VENV_PYTHON $SCRIPT 4 2>> "$LOGFILE")
+echo "Calling smart whisper script..." >> "$LOGFILE"
+TRANSCRIPTION=$($VENV_PYTHON $SCRIPT 2>> "$LOGFILE")
 echo "Transcription result: '$TRANSCRIPTION'" >> "$LOGFILE"
 
 # 4. Type into focused window
