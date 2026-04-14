@@ -168,6 +168,7 @@ globalkeys = gears.table.join(
     
     -- XFCE Integrated Shortcuts
     awful.key({ "Mod1" }, "F2", function() awful.spawn("xfce4-appfinder") end, {description = "run xfce-appfinder", group = "xfce"}),
+    awful.key({ "Mod1" }, "q", function() awful.spawn("/usr/local/bin/nerd-listen") end, {description = "run nerd-listen (voice input)", group = "xfce"}),
     awful.key({ }, "Print", function() awful.spawn("xfce4-screenshooter") end, {description = "take screenshot", group = "xfce"}),
     awful.key({ modkey }, "b", function() for s in screen do s.mywibox.visible = not s.mywibox.visible end end, {description = "toggle wibox", group = "awesome"})
 )
@@ -232,3 +233,4 @@ naughty.notify({ title = "AwesomeWM", text = "Configuration reloaded!", timeout 
 awful.spawn.with_shell("xfsettingsd")
 awful.spawn.with_shell("nm-applet")
 awful.spawn.with_shell("picom -b")
+awful.spawn.with_shell("xinput map-to-output 'GAOMON Gaomon Tablet Pen stylus' HDMI-1")

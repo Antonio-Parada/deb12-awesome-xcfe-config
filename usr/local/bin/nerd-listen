@@ -1,0 +1,47 @@
+#!/bin/bash
+# nerd-listen script with debug logging
+LOGFILE="/tmp/nerd-input.log"
+echo "--- Starting Nerd Input at $(date) ---" >> "$LOGFILE"
+
+# 1. Environment Check
+export DISPLAY=${DISPLAY:-:0.0}
+export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/run/user/0}
+mkdir -p "$XDG_RUNTIME_DIR" && chmod 700 "$XDG_RUNTIME_DIR"
+
+# Capture Active Window ID early
+TARGET_WINDOW=$(xdotool getactivewindow)
+echo "Targeting window ID: $TARGET_WINDOW" >> "$LOGFILE"
+
+# Ensure pipewire is running for root
+if ! pgrep -u root pipewire > /dev/null; then
+    echo "PipeWire not running, starting it..." >> "$LOGFILE"
+    pipewire &
+    pipewire-pulse &
+    wireplumber &
+    sleep 2
+fi
+
+# 2. Notify start
+notify-send "Nerd Input" "Prepare to speak..." -t 1000 >> "$LOGFILE" 2>&1
+sleep 1
+notify-send "Nerd Input" "Listening..." -i audio-input-microphone >> "$LOGFILE" 2>&1
+
+# 3. Transcribe
+VENV_PYTHON="/opt/nerd-input/venv/bin/python3"
+SCRIPT="/opt/nerd-input/whisper_transcribe.py"
+
+echo "Calling whisper script..." >> "$LOGFILE"
+TRANSCRIPTION=$($VENV_PYTHON $SCRIPT 4 2>> "$LOGFILE")
+echo "Transcription result: '$TRANSCRIPTION'" >> "$LOGFILE"
+
+# 4. Type into focused window
+if [ -n "$TRANSCRIPTION" ]; then
+    notify-send "Nerd Input" "Typing: $TRANSCRIPTION" -t 1000 >> "$LOGFILE" 2>&1
+    sleep 0.2
+    # Force focus back just in case
+    xdotool windowactivate "$TARGET_WINDOW"
+    xdotool type --window "$TARGET_WINDOW" --delay 50 "$TRANSCRIPTION" >> "$LOGFILE" 2>&1
+else
+    notify-send "Nerd Input" "Sorry, I didn't catch that." >> "$LOGFILE" 2>&1
+fi
+echo "--- Done ---" >> "$LOGFILE"
