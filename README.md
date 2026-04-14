@@ -1,4 +1,4 @@
-# AwesomeWM + XFCE Setup (Debian Bookworm 12)
+# AwesomeWM + XFCE Setup (deb12-awesome-xcfe-config)
 
 This repository contains the configuration files for a hybrid AwesomeWM and XFCE desktop environment on Debian Bookworm 12.
 
