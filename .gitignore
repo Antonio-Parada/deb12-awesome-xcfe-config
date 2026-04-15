@@ -1,2 +1,13 @@
+# Logs
 *.log
 *.old
+.xsession-errors*
+
+# Temporary files
+*.tmp
+*~
+.nfs*
+
+# System specific
+.DS_Store
+Thumbs.db
