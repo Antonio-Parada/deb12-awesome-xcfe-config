@@ -122,7 +122,7 @@
     </property>
     <property name="plugin-17" type="string" value="separator"/>
     <property name="plugin-18" type="string" value="directorymenu">
-      <property name="base-directory" type="string" value="/root"/>
+      <property name="base-directory" type="string" value="~"/>
     </property>
   </property>
 </channel>
